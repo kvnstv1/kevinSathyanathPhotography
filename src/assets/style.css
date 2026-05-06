@@ -1,0 +1,36 @@
+:root {
+
+  /*First colour combination */
+  --deep-teal: #5F7367;
+  --coffee-bean: #0E0004;
+  --steel-blue: #3F7CAC;
+  --berry-crush: #A53860;
+  --antique-white: #FFEEDB;
+
+  /*Second colour combination*/
+  --midnight-violet: #160C28;
+  --royal-gold: #EFCB68;
+  --honeydew: #E1EFE6;
+  --ash-grey: #AEB7B3;
+  --ink-black: #000411;
+
+  /*Third colour combination*/
+  --porcelain: #FBFEF9;
+  --shadow-grey: #191923;
+  --bright-teal-blue: #0E79B2;
+  --rosewood: #BF1363;
+  --carrot-orange: #F39237;
+
+  /*Fourth colour combination*/
+  --evergreen: #002626ff;
+  --dark-teal: #0e4749ff;
+  --yellow-green: #95c623ff;
+  --cayenne-red: #e55812ff;
+  --soft-linen: #efe7daff;
+
+  /*Semantic colour variables*/
+  --background-colour: var(--shadow-grey);
+  --text-colour: var(--porcelain)
+
+
+}
