@@ -28,9 +28,30 @@
   --cayenne-red: #e55812ff;
   --soft-linen: #efe7daff;
 
+  /*Fourth Colour combination*/
+  --midnight-violet: #3a3042ff;
+  --sunlit-clay: #db9d47ff;
+  --coral-glow: #ff784fff;
+  --soft-peach: #ffe19cff;
+  --frosted-mint: #edffd9ff;
+
   /*Semantic colour variables*/
-  --background-colour: var(--shadow-grey);
-  --text-colour: var(--porcelain)
+  --background-colour: var(--midnight-violet);
+  --headings-colour: var(--sunlit-clay);
+  --text-colour: var(--frosted-mint);
+
+
+  /*Remove default border and padding */
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  main{
+    background-color: var(--background-colour);
+    color: var(--text-colour);
+  }
 
 
 }
