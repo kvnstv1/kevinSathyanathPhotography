@@ -11,21 +11,19 @@ import boto3
 import requests
 
 #AWS SDK clients
-s3 = boto3.client('s3')
-dynamodb = boto3.resource('dynamodb')
+region = "ap-southeast-6"
+s3 = boto3.client('s3', region_name = region)
+dynamodb = boto3.resource('dynamodb', region_name = region)
 
 #DynamoDB database details
 tableName = "photographyPortfolioMetadata"
-region = "ap-southeast-6"
 
-#IOStream holding data from S3
-fileStream = io.bytesIO()
 
 #Cloudfront distribution
 cloud = "d3mu20l8vaxqu0.cloudfront.net"
 
 
-def getImageLocalVersion():
+def getImageLocalVersion(fileStream):
     """ 
     This downloads the image locally from the S3 bucket for local testing. 
     This will be done in-memory to simulate what will happen in the Lambda function
@@ -43,21 +41,73 @@ def getImageLocalVersion():
         print(f"Done.")      
     else:
         print(f"Error!!! Status code is {response.status_code}")
+
+
+def getExifData(fileStream):
+    """ 
+    Gets EXIF data from an image buffer.
+    Preps a JSON object that will be used to update the dynamoDB 
+    database
+    """
+    exif = {}
     
+    try:
+        fileStream.seek(0)
+        
+        with Image.open(fileStream) as img:
+            exifObject = img.getexif()
+            if not exifObject:
+                print(f"Something went wrong getting the EXIF object.")
+            
+            #Deal with root data
+            for k,v in exifObject.items():
+                kName = TAGS.get(k,k)
+                if kName in ['XPTitle', 'XPComment']:
+                    try:
+                        exif[kName] = v.decode('utf-16').rstrip('\x00')  #Solve windows formatting issues
+                    except:
+                        exif[kName] = v   #Force it through. Might need it.
+                else:
+                    exif[kName] = v
+            
+            #Get Actually vital photo data
+            exif_ifd = exifObject.get_ifd(34665)
+            for k,v in exif_ifd.items():
+                kName = TAGS.get(k,k)
+                exif[kName] = v
+                
+                if kName == 'UserComment' and isinstance(v,bytes):
+                    try:
+                        exif[kName] = v[8:].decode('utf-8', errors='ignore')
+                    except:
+                        pass
+        
+        
+        return exif
+    
+    except Exception as e:
+        print(f"Unforeseen error. Details: {e}")
+        return {}
 
 
 
 
-def lambda_handler(event, context):
+def lambdaHandler(event, context):
     
     #getImage()
     #getExifData()
     #generateThumbnail()
     #preparePayload()
     #updateDatabase
-    
-    getImageLocalVersion()
-    img = fileStream.read()
-    
+
+    #IOStream holding data from S3
+    fileStream = io.BytesIO()
+    getImageLocalVersion(fileStream)
+    data = getExifData(fileStream)
+    print("Data is ")
+    print(data)
     
     print(f"Operations completed.")
+    
+if __name__ == "__main__":
+    lambdaHandler(1,2)
