@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import '../assets/style.css'
+
+
+
 </script>
 
 <template>
@@ -11,7 +14,7 @@ import '../assets/style.css'
         </div>
       </div>
     </div>
-  </main>
+  </main> 
 </template>
 
 
