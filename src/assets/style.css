@@ -35,9 +35,16 @@
   --soft-peach: #ffe19cff;
   --frosted-mint: #edffd9ff;
 
+  /*Fifth Colour combination*/
+  --seaweed: #06a77dff;
+  --cobalt-blue: #1446a0ff;
+  --onyx: #141115ff;
+  --brandy: #942911ff;
+  --lime-cream: #e2eb98ff;
+
   /*Semantic colour variables*/
-  --background-colour: var(--midnight-violet);
-  --headings-colour: var(--sunlit-clay);
+  --background-colour: var(--brandy);
+  --headings-colour: var(--lime-cream);
   --text-colour: var(--frosted-mint);
 
 
