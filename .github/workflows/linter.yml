@@ -1,0 +1,51 @@
+name: Multi-Language Lint
+
+on:
+  push:
+    branches: 
+      - '**'
+  pull_request:
+    branches: [main]
+
+jobs:
+  javascript:
+    name: JavaScript/TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+          
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "Starting Typescript linting."
+      - run: npm ci
+      - run: npx eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 20
+      - run: npx prettier --check "**/*.{js,jsx,ts,tsx,json,md}"
+      - run: echo "Done Typescript Linting."
+
+  python:
+    name: Python
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: echo "Downloading ruff for Pylinting"
+
+      - name: Install linters
+        run: pip install ruff mypy
+
+      - name: Run Ruff
+        run: ruff check .
+
+      - name: Run MyPy
+        run: mypy . --ignore-missing-imports
+      
+      - run: echo "Done Python linting"
