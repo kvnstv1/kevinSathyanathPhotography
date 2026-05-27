@@ -49,11 +49,16 @@ def getfile_name(event):
     actual_key = urllib.parse.unquote_plus(raw_key)
     parts = actual_key.split("/")
     
-    # Derives album from top-level directory prefix; defaults safely to Miscellaneous
-    album_name = parts[0].split('-')[0] if len(parts) >= 1 else 'Miscellaneous'
     file_name = parts[-1]
+    clean_name = os.path.splitext(file_name)[0] 
     
-    logger.info(f"Album name: '{album_name}' | File Name: '{file_name}'")
+    #If I put the photo in a folder, first part happens, else the second.
+    if len(parts) > 1:
+        album_name = parts[0]
+    else:
+        album_name = clean_name.split('-')[0]
+        
+    logger.info(f"Target Album Primary Key: '{album_name}' | File Name: '{file_name}'")
     return album_name, file_name
 
 
