@@ -1,10 +1,3 @@
-<script setup lang="ts">
-import '../assets/style.css'
-
-
-
-</script>
-
 <template>
   <main>
     <div class="full-page">
@@ -14,8 +7,32 @@ import '../assets/style.css'
         </div>
       </div>
     </div>
-  </main> 
+  </main>
 </template>
+
+<script setup lang="ts">
+import '../assets/style.css'
+import axios from 'axios';
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  fetchPhotos();
+});
+
+const fetchPhotos = async () => {
+  const API_URL = 'https://yvd6ldf6f6.execute-api.ap-southeast-6.amazonaws.com/Prod';
+  try{
+    const response = await axios.get(API_URL+'/albums');
+    console.log("Incoming data is ", response.data);
+    return response.data;
+  }catch(error){
+    console.log("Error fetching data: ", error);
+  }
+}
+
+
+
+</script>
 
 
 <style>
